@@ -54,13 +54,23 @@ data_wide_sub %>%
   mutate(prop = n / sum(n)) %>% 
   ggplot(aes(fill = mental_health_disorder, x = year, y = prop))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = round(n)), position = position_stack(vjust = 0.5), vjust = -1.0)+
-  geom_line(aes(x = year, y = prop, group = mental_health_disorder), position = position_stack(vjust = 0.5))+
-  geom_point(aes(x = year, y = prop, group = mental_health_disorder), position = position_stack(vjust = 0.5))+
-  ggtitle("Distribution of mental health disorder across questionnaires") +
+  geom_text(aes(label = scales::percent(round(prop, 2))), position = position_stack(vjust = 0.5))+
+  #geom_line(aes(x = year, y = prop, group = mental_health_disorder), position = position_stack(vjust = 0.5))+
+  #geom_point(aes(x = year, y = prop, group = mental_health_disorder), position = position_stack(vjust = 0.5))+
+  ggtitle("Distribution of mental health disorder across questionnaires")+
+  ylab("Proportion")+
+  scale_y_continuous(
+    labels = scales::percent_format()
+  )+
   #viridis::theme_ipsum() +
   xlab("")+
-  theme_minimal()
+  labs(fill = "Mental Health Disorder")+
+  theme_minimal()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
+
 
 data_wide_sub %>% 
   group_by(year, mental_health_disorder) %>% 
@@ -76,17 +86,28 @@ data_wide_sub %>%
   mutate(prop = n / sum(n)) %>% 
   ggplot(aes(fill = sex, x = year, y = prop))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = round(n)), position = position_stack(vjust = 0.5))+
+  geom_text(aes(label = scales::percent(round(prop, 2))), position = position_stack(vjust = 0.5))+
   #viridis::scale_fill_viridis(discrete = T, option = "D") +
   ggtitle("Distribution of sex across questionnaires") +
+  ylab("Proportion")+
+  scale_y_continuous(
+    labels = scales::percent_format()
+  )+
   #viridis::theme_ipsum() +
   xlab("")+
-  theme_minimal()
+  labs(fill = "Sex")+
+  theme_minimal()+
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank()
+  )
 
 
 data_wide_sub %>% 
   ggplot(aes(x = age))+
-  ggtitle("Distribution of age across questionnaires") +
+  ggtitle("") +
+  ylab("Count")+
+  xlab("Age")+
   geom_histogram()+
   facet_grid(~year)+
   theme_minimal()
